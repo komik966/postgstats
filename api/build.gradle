@@ -12,6 +12,8 @@ plugins {
 
     // Apply the application plugin to add support for building a CLI application.
     id 'application'
+
+    id 'checkstyle'
 }
 
 repositories {
@@ -22,7 +24,8 @@ repositories {
 
 dependencies {
     // This dependency is used by the application.
-    implementation 'com.google.guava:guava:28.1-jre'
+    implementation 'postgresql:postgresql:9.1-901-1.jdbc4'
+    implementation 'io.netty:netty-all:4.1.45.Final'
 
     // Use JUnit Jupiter API for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.2'
@@ -33,10 +36,14 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClassName = 'api.App'
+    mainClassName = 'postgstats.App'
 }
 
 test {
     // Use junit platform for unit tests
     useJUnitPlatform()
+}
+
+checkstyle {
+    toolVersion '8.30' // when updating toolVersion, also update checkstyle.xml
 }
