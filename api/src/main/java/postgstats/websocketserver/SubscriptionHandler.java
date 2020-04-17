@@ -5,13 +5,11 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 
-class SubscriptionHandler
-    extends SimpleChannelInboundHandler<WebSocketFrame> {
+class SubscriptionHandler extends SimpleChannelInboundHandler<WebSocketFrame> {
 
   @Override
-  protected void channelRead0(
-      final ChannelHandlerContext ctx,
-      final WebSocketFrame msg) throws Exception {
+  protected void channelRead0(final ChannelHandlerContext ctx, final WebSocketFrame msg)
+      throws Exception {
     ctx.channel().writeAndFlush(new TextWebSocketFrame("foo"));
   }
 }

@@ -7,11 +7,7 @@ const Dashboard: FC<Props> = ({ wsUrl }) => {
     subject.subscribe();
     subject.next('foo');
 
-    return () => {
-      if (!subject.closed) {
-        subject.unsubscribe();
-      }
-    };
+    return () => subject.unsubscribe();
   }, [wsUrl]);
 
   return null;

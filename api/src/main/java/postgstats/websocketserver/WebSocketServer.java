@@ -10,18 +10,14 @@ import io.netty.handler.logging.LoggingHandler;
 
 public class WebSocketServer {
 
-  /**
-   * Starts WebSocket server.
-   *
-   * @param port port to listen on
-   */
-  public void start(final Integer port) throws Exception {
+  public void start(Integer port) throws Exception {
     EventLoopGroup bossGroup = new NioEventLoopGroup(1);
     EventLoopGroup workerGroup = new NioEventLoopGroup();
 
     try {
       ServerBootstrap b = new ServerBootstrap();
-      b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
+      b.group(bossGroup, workerGroup)
+          .channel(NioServerSocketChannel.class)
           .handler(new LoggingHandler(LogLevel.INFO))
           .childHandler(new Initializer());
 
