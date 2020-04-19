@@ -7,11 +7,11 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
-import { PlayCircleOutline } from '@material-ui/icons';
+import { PauseCircleOutline, PlayCircleOutline } from '@material-ui/icons';
 import config from './config';
 import { makeStyles } from '@material-ui/core/styles';
 
-const AppBar: FC<Props> = ({ onPlayClick }) => {
+const AppBar: FC<Props> = ({ onPlayClick, running }) => {
   const [inputValue, setInputValue] = useState(config.WS_URL);
   const classes = useStyles();
 
@@ -32,7 +32,7 @@ const AppBar: FC<Props> = ({ onPlayClick }) => {
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton onClick={() => onPlayClick(inputValue)}>
-                  <PlayCircleOutline />
+                  {running ? <PauseCircleOutline /> : <PlayCircleOutline />}
                 </IconButton>
               </InputAdornment>
             ),
@@ -59,6 +59,7 @@ const useStyles = makeStyles(theme => ({
 
 interface Props {
   onPlayClick: (newWsUrl: string) => void;
+  running: boolean;
 }
 
 export default AppBar;

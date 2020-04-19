@@ -4,12 +4,20 @@ import AppBar from './AppBar';
 import config from './config';
 
 const App: FC = () => {
-  const [wsUrl, setWsUrl] = useState(config.WS_URL);
+  const [state, setState] = useState({
+    running: true,
+    wsUrl: config.WS_URL,
+  });
 
   return (
     <>
-      <AppBar onPlayClick={setWsUrl} />
-      <Dashboard wsUrl={wsUrl} />
+      <AppBar
+        onPlayClick={newWsUrl =>
+          setState(prev => ({ running: !prev.running, wsUrl: newWsUrl }))
+        }
+        running={state.running}
+      />
+      <Dashboard wsUrl={state.wsUrl} running={state.running} />
     </>
   );
 };
