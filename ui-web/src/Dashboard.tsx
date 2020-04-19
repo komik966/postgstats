@@ -5,7 +5,6 @@ const Dashboard: FC<Props> = ({ wsUrl }) => {
   useEffect(() => {
     const subject = webSocket(wsUrl);
     subject.subscribe();
-    subject.next('foo');
 
     return () => subject.unsubscribe();
   }, [wsUrl]);
