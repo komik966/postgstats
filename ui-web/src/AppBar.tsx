@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 import {
   AppBar as MuiAppBar,
+  colors,
   IconButton,
   InputAdornment,
   TextField,
@@ -16,7 +17,7 @@ const AppBar: FC<Props> = ({ onPlayClick, running }) => {
   const classes = useStyles();
 
   return (
-    <MuiAppBar position="static">
+    <MuiAppBar position="sticky">
       <Toolbar>
         <Typography variant="h6">PostgStats</Typography>
 
@@ -24,7 +25,7 @@ const AppBar: FC<Props> = ({ onPlayClick, running }) => {
           fullWidth
           value={inputValue}
           onChange={e => setInputValue(e.target.value)}
-          placeholder="PostgStats' WebSocket URL"
+          placeholder="PostgStats WebSocket URL"
           variant="outlined"
           margin="dense"
           className={classes.textField}
@@ -32,7 +33,11 @@ const AppBar: FC<Props> = ({ onPlayClick, running }) => {
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton onClick={() => onPlayClick(inputValue)}>
-                  {running ? <PauseCircleOutline /> : <PlayCircleOutline />}
+                  {running ? (
+                    <PauseCircleOutline className={classes.pause} />
+                  ) : (
+                    <PlayCircleOutline className={classes.play} />
+                  )}
                 </IconButton>
               </InputAdornment>
             ),
@@ -44,6 +49,12 @@ const AppBar: FC<Props> = ({ onPlayClick, running }) => {
 };
 
 const useStyles = makeStyles(theme => ({
+  pause: {
+    color: colors.red['700'],
+  },
+  play: {
+    color: colors.green['500'],
+  },
   textField: {
     '& .MuiInputBase-root': {
       background: theme.palette.grey['300'],

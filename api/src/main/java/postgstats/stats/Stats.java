@@ -13,12 +13,22 @@ public class Stats {
     this.conn = conn;
   }
 
-  public Map<String, StatsResult> query() throws SQLException {
-    ResultSet rs = conn.createStatement().executeQuery("select pg_database_size('postgres');");
+  public StatsResult query() throws SQLException {
+    return new StatsResult(queryDbSize());
+  }
 
-    rs.next();
-    HashMap<String, StatsResult> result = new HashMap();
-    result.put("postgres", new StatsResult(rs.getInt(1)));
+  private Map<String, Integer> queryDbSize() throws SQLException {
+    ResultSet rs =
+        conn.createStatement()
+            .executeQuery(
+                "select datname, pg_database_size(datname) from pg_database order by datname");
+
+    Map<String, Integer> result = new HashMap<>();
+
+    while (rs.next()) {
+      result.put(rs.getString(1), rs.getInt(2));
+    }
+
     return result;
   }
 }

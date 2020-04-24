@@ -1,9 +1,11 @@
 package postgstats.stats;
 
-class StatsResult {
-  Integer dbSize;
+import java.util.Map;
 
-  StatsResult(Integer dbSize) {
+class StatsResult {
+  Map<String, Integer> dbSize;
+
+  StatsResult(Map<String, Integer> dbSize) {
     this.dbSize = dbSize;
   }
 }
