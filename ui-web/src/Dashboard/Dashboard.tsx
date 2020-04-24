@@ -3,6 +3,7 @@ import { webSocket } from 'rxjs/webSocket';
 import { StatsResult } from './types';
 import DbSize from './DbSize';
 import { CircularProgress, Grid, Typography } from '@material-ui/core';
+import LongQueries from './LongQueries';
 
 const Dashboard: FC<Props> = ({ wsUrl, running }) => {
   const [statsResult, setStatsResult] = useState<StatsResult>();
@@ -32,9 +33,12 @@ const Dashboard: FC<Props> = ({ wsUrl, running }) => {
   }
 
   return (
-    <Grid container>
+    <Grid container spacing={1}>
       <Grid sm={12} md={4} item>
         <DbSize data={statsResult.dbSize} />
+      </Grid>
+      <Grid sm={12} md={8} item>
+        <LongQueries data={statsResult.longQueries} />
       </Grid>
     </Grid>
   );
