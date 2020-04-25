@@ -9,8 +9,7 @@ const VerticalBarChart: FC<Props> = ({ data, color, height }) => {
           return;
         }
         const svg = chart(
-          Object.keys(data),
-          Object.values(data),
+          Object.keys(data).map((label) => ({ label, value: data[label] })),
           elem.offsetWidth,
           height,
           color,
@@ -26,61 +25,54 @@ const VerticalBarChart: FC<Props> = ({ data, color, height }) => {
 };
 
 const chart = (
-  xData: string[],
-  yData: number[],
+  data: Array<{ value: number; label: string }>,
   width: number,
   height: number,
   color: string,
 ) => {
-  console.log(xData, yData);
   const margin = { bottom: 30, left: 40, right: 0, top: 30 };
+  const yData = data.map((v) => v.value);
+  const yMin = 0; //d3.min(yData) || 0;
+  const yMax = d3.max(yData) || 0;
 
   const x = d3
-    .scaleBand()
-    .domain(xData)
+    .scaleBand<number>()
+    .domain(d3.range(data.length))
     .range([margin.left, width - margin.right])
     .padding(0.1);
 
   const y = d3
     .scaleLinear()
-    .domain([d3.min(yData) || 0, d3.max(yData) || 0])
+    .domain([yMin, yMax])
     .nice()
     .range([height - margin.bottom, margin.top]);
 
   const svg = d3.create('svg').attr('viewBox', `0, 0, ${width}, ${height}`);
 
-  // svg
-  //   .append('g')
-  //   .attr('fill', color)
-  //   .selectAll('rect')
-  //   .data(yData)
-  //   .join('rect')
-  //   .attr('x', (d, i) => x(i))
-  //   .attr('y', (d) => y(d.value))
-  //   .attr('height', (d) => y(0) - y(d.value))
-  //   .attr('width', x.bandwidth());
-
   svg
     .append('g')
-    .call((g) =>
-      g
-        .attr('transform', `translate(0,${height - margin.bottom})`)
-        .call(d3.axisBottom(x)),
-    );
-  svg.append('g').call(
-    (g) =>
-      g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(y)),
-    // .call((g) => g.select('.domain').remove())
-    // .call(
-    //   (g) =>
-    //     g
-    //       .append('text')
-    //       .attr('x', -margin.left)
-    //       .attr('y', 10)
-    //       .attr('fill', 'currentColor')
-    //       .attr('text-anchor', 'start'),
-    //   // .text(data),
-    // ),
+    .attr('fill', color)
+    .selectAll('rect')
+    .data(data)
+    .join('rect')
+    .attr('x', (d, i) => x(i) || 0)
+    .attr('y', (d) => y(d.value))
+    .attr('height', (d) => y(yMin) - y(d.value))
+    .attr('width', x.bandwidth());
+
+  svg.append('g').call((g) =>
+    g.attr('transform', `translate(0,${height - margin.bottom})`).call(
+      d3
+        .axisBottom(x)
+        .tickFormat((i) => data[i].label)
+        .tickSizeOuter(0),
+    ),
+  );
+  svg.append('g').call((g) =>
+    g
+      .attr('transform', `translate(${margin.left},0)`)
+      .call(d3.axisLeft(y).ticks(null, '~s'))
+      .call((g) => g.select('.domain').remove()),
   );
 
   return svg.node();
