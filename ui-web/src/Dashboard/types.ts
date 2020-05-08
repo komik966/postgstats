@@ -2,6 +2,7 @@ export interface StatsResult {
   dbSize: DbSizeStats;
   longQueries: LongQuery[];
   bgWriter: BgWriter;
+  locks: Lock[];
 }
 
 export type DbSizeStats = Record<DbName, number>;
@@ -20,6 +21,18 @@ export interface BgWriter {
   totalWritten: string;
   checkpointWritePct: number;
   backendWritePct: number;
+}
+
+export interface Lock {
+  lockType: string;
+  virtualTransaction: string;
+  transactionTd: string;
+  nspName: string;
+  relName: string;
+  mode: string;
+  granted: boolean;
+  queryStart: string;
+  query: string;
 }
 
 type DbName = string;

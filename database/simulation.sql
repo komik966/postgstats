@@ -21,3 +21,14 @@ drop table city;
 
 --- simulate long query
 select pg_sleep(5 * 60);
+
+-- simulate deadlock
+CREATE TABLE ABC (ID INT PRIMARY KEY);
+CREATE TABLE XYZ (ID INT PRIMARY KEY);
+    -- in first session:
+    BEGIN;
+    INSERT INTO ABC VALUES (1);
+    -- in second session:
+    BEGIN;
+    INSERT INTO XYZ VALUES (1);
+    INSERT INTO ABC VALUES (1);

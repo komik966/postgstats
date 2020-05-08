@@ -20,7 +20,7 @@ public class Stats {
   }
 
   public StatsResult query() throws SQLException {
-    return new StatsResult(queryDbSize(), queryLongQueries(), queryBgWriter());
+    return new StatsResult(queryDbSize(), queryLongQueries(), queryBgWriter(), queryLocks());
   }
 
   private Map<String, Integer> queryDbSize() throws SQLException {
@@ -71,5 +71,40 @@ public class Stats {
     rs.next();
     return new StatsResult.BgWriter(
         rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5));
+  }
+
+  private List<StatsResult.Lock> queryLocks() throws SQLException {
+    String query =
+        String.join(
+            " ",
+            "select",
+            "locktype, virtualtransaction, transactionid, nspname, relname, mode, granted,",
+            "cast(date_trunc('second', query_start) AS timestamp) AS query_start,",
+            "query",
+            "from pg_locks",
+            "left outer join pg_class on pg_locks.relation = pg_class.oid",
+            "left outer join pg_namespace on pg_namespace.oid = pg_class.relnamespace,",
+            "pg_stat_activity",
+            "where not pg_locks.pid = pg_backend_pid() ",
+            "and pg_locks.pid = pg_stat_activity.pid;");
+    ResultSet rs = conn.createStatement().executeQuery(query);
+
+    List<StatsResult.Lock> result = new ArrayList<>();
+
+    while (rs.next()) {
+      result.add(
+          new StatsResult.Lock(
+              rs.getString(1),
+              rs.getString(2),
+              rs.getString(3),
+              rs.getString(4),
+              rs.getString(5),
+              rs.getString(6),
+              rs.getBoolean(7),
+              rs.getString(8),
+              rs.getString(9)));
+    }
+
+    return result;
   }
 }
