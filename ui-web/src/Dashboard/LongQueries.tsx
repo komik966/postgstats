@@ -12,12 +12,23 @@ import {
 } from '@material-ui/core';
 import { LongQuery } from './types';
 import { Speed } from '@material-ui/icons';
+import useExpandStyles from './useExpandStyles';
+import clsx from 'clsx';
 
-const LongQueries: FC<Props> = ({ data }) => {
+const LongQueries: FC<Props> = ({ data, expanded, toggle }) => {
+  const expandClasses = useExpandStyles();
   return (
     <Card>
-      <CardHeader title="Długie zapytania" />
-      <CardContent>
+      <CardHeader
+        title="Długie zapytania"
+        onClick={toggle}
+        className={expandClasses.header}
+      />
+      <CardContent
+        className={clsx({
+          [expandClasses.contentNotExpanded]: !expanded,
+        })}
+      >
         <Table>
           <TableHead>
             <TableRow>
@@ -61,10 +72,13 @@ const LongQueries: FC<Props> = ({ data }) => {
 
 interface Props {
   data: LongQuery[];
+  expanded: boolean;
+  toggle: () => void;
 }
 
 export default memo(
   LongQueries,
   (prevProps, nextProps) =>
-    JSON.stringify(prevProps.data) === JSON.stringify(nextProps.data),
+    JSON.stringify(prevProps.data) === JSON.stringify(nextProps.data) &&
+    prevProps.expanded === nextProps.expanded,
 );

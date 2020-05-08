@@ -8,12 +8,23 @@ import {
   ListItemText,
 } from '@material-ui/core';
 import { BgWriter as BgWriterModel } from './types';
+import useExpandStyles from './useExpandStyles';
+import clsx from 'clsx';
 
-const BgWriter: FC<Props> = ({ data }) => {
+const BgWriter: FC<Props> = ({ data, expanded, toggle }) => {
+  const expandClasses = useExpandStyles();
   return (
     <Card>
-      <CardHeader title="Background writer" />
-      <CardContent>
+      <CardHeader
+        title="Background writer"
+        onClick={toggle}
+        className={expandClasses.header}
+      />
+      <CardContent
+        className={clsx({
+          [expandClasses.contentNotExpanded]: !expanded,
+        })}
+      >
         <List dense>
           <ListItem>
             <ListItemText
@@ -53,10 +64,13 @@ const BgWriter: FC<Props> = ({ data }) => {
 
 interface Props {
   data: BgWriterModel;
+  expanded: boolean;
+  toggle: () => void;
 }
 
 export default memo(
   BgWriter,
   (prevProps, nextProps) =>
-    JSON.stringify(prevProps.data) === JSON.stringify(nextProps.data),
+    JSON.stringify(prevProps.data) === JSON.stringify(nextProps.data) &&
+    prevProps.expanded === nextProps.expanded,
 );

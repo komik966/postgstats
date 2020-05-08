@@ -12,12 +12,23 @@ import {
 } from '@material-ui/core';
 import { Lock } from './types';
 import { LockOpen } from '@material-ui/icons';
+import useExpandStyles from './useExpandStyles';
+import clsx from 'clsx';
 
-const Locks: FC<Props> = ({ data }) => {
+const Locks: FC<Props> = ({ data, expanded, toggle }) => {
+  const expandClasses = useExpandStyles();
   return (
     <Card>
-      <CardHeader title="Blokady" />
-      <CardContent>
+      <CardHeader
+        title="Blokady"
+        onClick={toggle}
+        className={expandClasses.header}
+      />
+      <CardContent
+        className={clsx({
+          [expandClasses.contentNotExpanded]: !expanded,
+        })}
+      >
         <Table>
           <TableHead>
             <TableRow>
@@ -69,10 +80,13 @@ const Locks: FC<Props> = ({ data }) => {
 
 interface Props {
   data: Lock[];
+  expanded: boolean;
+  toggle: () => void;
 }
 
 export default memo(
   Locks,
   (prevProps, nextProps) =>
-    JSON.stringify(prevProps.data) === JSON.stringify(nextProps.data),
+    JSON.stringify(prevProps.data) === JSON.stringify(nextProps.data) &&
+    prevProps.expanded === nextProps.expanded,
 );
