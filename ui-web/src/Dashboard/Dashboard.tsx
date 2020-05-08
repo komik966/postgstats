@@ -4,6 +4,7 @@ import { StatsResult } from './types';
 import DbSize from './DbSize';
 import { CircularProgress, Grid, Typography } from '@material-ui/core';
 import LongQueries from './LongQueries';
+import BgWriter from './BgWriter';
 
 const Dashboard: FC<Props> = ({ wsUrl, running }) => {
   const [statsResult, setStatsResult] = useState<StatsResult>();
@@ -39,6 +40,9 @@ const Dashboard: FC<Props> = ({ wsUrl, running }) => {
       </Grid>
       <Grid sm={12} md={8} item>
         <LongQueries data={statsResult.longQueries} />
+      </Grid>
+      <Grid sm={12} md={4} item>
+        <BgWriter data={statsResult.bgWriter} />
       </Grid>
     </Grid>
   );
