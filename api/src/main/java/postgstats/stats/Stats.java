@@ -60,11 +60,11 @@ public class Stats {
         String.join(
             " ",
             "select",
-            "(100 * checkpoints_req) / (checkpoints_timed + checkpoints_req)                         AS checkpoints_req_pct,",
-            "pg_size_pretty(buffers_checkpoint * block_size / (checkpoints_timed + checkpoints_req)) AS avg_checkpoint_write,",
+            "(100 * checkpoints_req) / nullif(checkpoints_timed + checkpoints_req, 0)                         AS checkpoints_req_pct,",
+            "pg_size_pretty(buffers_checkpoint * block_size / nullif(checkpoints_timed + checkpoints_req, 0)) AS avg_checkpoint_write,",
             "pg_size_pretty(block_size * (buffers_checkpoint + buffers_clean + buffers_backend))     AS total_written,",
-            "100 * buffers_checkpoint / (buffers_checkpoint + buffers_clean + buffers_backend)       AS checkpoint_write_pct,",
-            "100 * buffers_backend / (buffers_checkpoint + buffers_clean + buffers_backend)          AS backend_write_pct",
+            "100 * buffers_checkpoint / nullif(buffers_checkpoint + buffers_clean + buffers_backend, 0)       AS checkpoint_write_pct,",
+            "100 * buffers_backend / nullif(buffers_checkpoint + buffers_clean + buffers_backend, 0)          AS backend_write_pct",
             "from pg_stat_bgwriter, (select cast(current_setting('block_size') AS integer) AS block_size) as bs;");
     ResultSet rs = conn.createStatement().executeQuery(query);
 
