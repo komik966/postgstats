@@ -31,14 +31,6 @@ const Dashboard: FC<Props> = ({ wsUrl, running }) => {
     return () => subject.unsubscribe();
   }, [wsUrl, running]);
 
-  if (error) {
-    return (
-      <Typography>
-        Błąd połączenia. Spróbuj zatrzymać i uruchomić ponownie używając
-        przycisku w pasku z adresem WebSocket'u.
-      </Typography>
-    );
-  }
   const [expanded, setExpanded] = useState({
     bgWriter: true,
     dbSize: true,
@@ -47,6 +39,15 @@ const Dashboard: FC<Props> = ({ wsUrl, running }) => {
     longQueries: true,
   });
   const shouldClose = Object.values(expanded).every((v) => v);
+
+  if (error) {
+    return (
+      <Typography>
+        Błąd połączenia. Spróbuj zatrzymać i uruchomić ponownie używając
+        przycisku w pasku z adresem WebSocket'u.
+      </Typography>
+    );
+  }
 
   if (!statsResult) {
     return <CircularProgress />;
