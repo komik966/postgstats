@@ -20,7 +20,8 @@ public class Stats {
   }
 
   public StatsResult query() throws SQLException {
-    return new StatsResult(queryDbSize(), queryLongQueries(), queryBgWriter(), queryLocks());
+    return new StatsResult(
+        queryDbSize(), queryLongQueries(), queryBgWriter(), queryLocks(), queryIndexes());
   }
 
   private Map<String, Integer> queryDbSize() throws SQLException {
@@ -103,6 +104,21 @@ public class Stats {
               rs.getBoolean(7),
               rs.getString(8),
               rs.getString(9)));
+    }
+
+    return result;
+  }
+
+  private List<StatsResult.Index> queryIndexes() throws SQLException {
+    ResultSet rs =
+        conn.createStatement()
+            .executeQuery(
+                "select indexrelname, round(cast(idx_tup_read as numeric) / idx_scan, 0) as avg_tuples, idx_scan, idx_tup_read from pg_stat_user_indexes where idx_scan > 0;");
+
+    List<StatsResult.Index> result = new ArrayList<>();
+
+    while (rs.next()) {
+      result.add(new StatsResult.Index(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getInt(4)));
     }
 
     return result;

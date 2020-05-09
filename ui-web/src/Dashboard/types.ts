@@ -3,6 +3,7 @@ export interface StatsResult {
   longQueries: LongQuery[];
   bgWriter: BgWriter;
   locks: Lock[];
+  indexes: Index[];
 }
 
 export type DbSizeStats = Record<DbName, number>;
@@ -33,6 +34,13 @@ export interface Lock {
   granted: boolean;
   queryStart: string;
   query: string;
+}
+
+export interface Index {
+  indexRelName: string;
+  avgTuples: number;
+  idxScan: number;
+  idxTupRead: number;
 }
 
 type DbName = string;

@@ -24,7 +24,7 @@ const AppBar: FC<Props> = ({ onPlayClick, running }) => {
         <TextField
           fullWidth
           value={inputValue}
-          onChange={e => setInputValue(e.target.value)}
+          onChange={(e) => setInputValue(e.target.value)}
           placeholder="PostgStats WebSocket URL"
           variant="outlined"
           margin="dense"
@@ -48,7 +48,7 @@ const AppBar: FC<Props> = ({ onPlayClick, running }) => {
   );
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   pause: {
     color: colors.red['700'],
   },

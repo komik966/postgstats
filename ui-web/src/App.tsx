@@ -14,8 +14,8 @@ const App: FC = () => {
   return (
     <>
       <AppBar
-        onPlayClick={newWsUrl =>
-          setState(prev => ({ running: !prev.running, wsUrl: newWsUrl }))
+        onPlayClick={(newWsUrl) =>
+          setState((prev) => ({ running: !prev.running, wsUrl: newWsUrl }))
         }
         running={state.running}
       />
@@ -26,7 +26,7 @@ const App: FC = () => {
   );
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   dashboardContainer: {
     margin: theme.spacing(1, 0.5),
   },

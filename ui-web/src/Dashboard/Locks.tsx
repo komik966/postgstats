@@ -56,18 +56,18 @@ const Locks: FC<Props> = ({ data, expanded, toggle }) => {
               </TableRow>
             )}
             {data.length > 0 &&
-              data.map((longQuery, idx) => (
+              data.map((lock, idx) => (
                 <TableRow key={idx}>
-                  <TableCell>{longQuery.lockType}</TableCell>
-                  <TableCell>{longQuery.virtualTransaction}</TableCell>
-                  <TableCell>{longQuery.transactionTd}</TableCell>
-                  <TableCell>{longQuery.nspName}</TableCell>
-                  <TableCell>{longQuery.relName}</TableCell>
-                  <TableCell>{longQuery.mode}</TableCell>
-                  <TableCell>{longQuery.granted ? 'tak' : 'nie'}</TableCell>
-                  <TableCell>{longQuery.queryStart}</TableCell>
+                  <TableCell>{lock.lockType}</TableCell>
+                  <TableCell>{lock.virtualTransaction}</TableCell>
+                  <TableCell>{lock.transactionTd}</TableCell>
+                  <TableCell>{lock.nspName}</TableCell>
+                  <TableCell>{lock.relName}</TableCell>
+                  <TableCell>{lock.mode}</TableCell>
+                  <TableCell>{lock.granted ? 'tak' : 'nie'}</TableCell>
+                  <TableCell>{lock.queryStart}</TableCell>
                   <TableCell>
-                    <code>{longQuery.query}</code>
+                    <code>{lock.query}</code>
                   </TableCell>
                 </TableRow>
               ))}

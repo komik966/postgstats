@@ -1,9 +1,9 @@
 import React, { FC, memo } from 'react';
 import { Card, CardContent, CardHeader, useTheme } from '@material-ui/core';
-import { DbSizeStats } from './types';
-import VerticalBarChart from '../Chart/VerticalBarChart';
-import useExpandStyles from './useExpandStyles';
+import { DbSizeStats } from '../types';
+import useExpandStyles from '../useExpandStyles';
 import clsx from 'clsx';
+import VerticalBarChart from './VerticalBarChart';
 
 const DbSize: FC<Props> = ({ data, expanded, toggle }) => {
   const theme = useTheme();

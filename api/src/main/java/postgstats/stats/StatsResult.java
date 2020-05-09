@@ -8,16 +8,19 @@ class StatsResult {
   List<LongQuery> longQueries;
   BgWriter bgWriter;
   List<Lock> locks;
+  List<Index> indexes;
 
   StatsResult(
       Map<String, Integer> dbSize,
       List<LongQuery> longQueries,
       BgWriter bgWriter,
-      List<Lock> locks) {
+      List<Lock> locks,
+      List<Index> indexes) {
     this.dbSize = dbSize;
     this.longQueries = longQueries;
     this.bgWriter = bgWriter;
     this.locks = locks;
+    this.indexes = indexes;
   }
 
   static class LongQuery {
@@ -43,7 +46,7 @@ class StatsResult {
     Integer checkpointWritePct;
     Integer backendWritePct;
 
-    public BgWriter(
+    BgWriter(
         Integer checkpointsReqPct,
         String avgCheckpointWrite,
         String totalWritten,
@@ -68,7 +71,7 @@ class StatsResult {
     String queryStart;
     String query;
 
-    public Lock(
+    Lock(
         String lockType,
         String virtualTransaction,
         String transactionTd,
@@ -87,6 +90,20 @@ class StatsResult {
       this.granted = granted;
       this.queryStart = queryStart;
       this.query = query;
+    }
+  }
+
+  static class Index {
+    String indexRelName;
+    Integer avgTuples;
+    Integer idxScan;
+    Integer idxTupRead;
+
+    Index(String indexRelName, Integer avgTuples, Integer idxScan, Integer idxTupRead) {
+      this.indexRelName = indexRelName;
+      this.avgTuples = avgTuples;
+      this.idxScan = idxScan;
+      this.idxTupRead = idxTupRead;
     }
   }
 }
