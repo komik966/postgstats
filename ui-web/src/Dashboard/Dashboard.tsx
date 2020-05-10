@@ -15,6 +15,7 @@ import Locks from './Locks';
 import Separator from './Separator';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import Indexes from './Indexes';
+import IndexSizes from './IndexSizes';
 
 const Dashboard: FC<Props> = ({ wsUrl, running }) => {
   const theme = useTheme();
@@ -34,6 +35,7 @@ const Dashboard: FC<Props> = ({ wsUrl, running }) => {
   const [expanded, setExpanded] = useState({
     bgWriter: true,
     dbSize: true,
+    indexSizes: true,
     indexes: true,
     locks: true,
     longQueries: true,
@@ -68,6 +70,7 @@ const Dashboard: FC<Props> = ({ wsUrl, running }) => {
             setExpanded({
               bgWriter: false,
               dbSize: false,
+              indexSizes: false,
               indexes: false,
               locks: false,
               longQueries: false,
@@ -76,6 +79,7 @@ const Dashboard: FC<Props> = ({ wsUrl, running }) => {
             setExpanded({
               bgWriter: true,
               dbSize: true,
+              indexSizes: true,
               indexes: true,
               locks: true,
               longQueries: true,
@@ -100,6 +104,14 @@ const Dashboard: FC<Props> = ({ wsUrl, running }) => {
             expanded={expanded.bgWriter}
             toggle={() =>
               setExpanded((prev) => ({ ...prev, bgWriter: !prev.bgWriter }))
+            }
+          />
+          <Separator />
+          <IndexSizes
+            data={statsResult.indexSizes}
+            expanded={expanded.indexSizes}
+            toggle={() =>
+              setExpanded((prev) => ({ ...prev, indexSizes: !prev.indexSizes }))
             }
           />
         </Grid>
