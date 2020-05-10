@@ -4,6 +4,7 @@ export interface StatsResult {
   bgWriter: BgWriter;
   locks: Lock[];
   indexes: Index[];
+  indexSizes: IndexSize[];
 }
 
 export type DbSizeStats = Record<DbName, number>;
@@ -41,6 +42,12 @@ export interface Index {
   avgTuples: number;
   idxScan: number;
   idxTupRead: number;
+}
+
+export interface IndexSize {
+  idxName: string;
+  idxSizePretty: string;
+  idxSize: string;
 }
 
 type DbName = string;

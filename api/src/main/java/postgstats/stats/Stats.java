@@ -21,7 +21,12 @@ public class Stats {
 
   public StatsResult query() throws SQLException {
     return new StatsResult(
-        queryDbSize(), queryLongQueries(), queryBgWriter(), queryLocks(), queryIndexes());
+        queryDbSize(),
+        queryLongQueries(),
+        queryBgWriter(),
+        queryLocks(),
+        queryIndexes(),
+        queryIndexSizes());
   }
 
   private Map<String, Integer> queryDbSize() throws SQLException {
@@ -119,6 +124,28 @@ public class Stats {
 
     while (rs.next()) {
       result.add(new StatsResult.Index(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getInt(4)));
+    }
+
+    return result;
+  }
+
+  private List<StatsResult.IndexSize> queryIndexSizes() throws SQLException {
+    String query =
+        String.join(
+            " ",
+            "select",
+            "relname                                        as idx_name,",
+            "pg_size_pretty(pg_total_relation_size(pc.oid)) as idx_size_pretty,",
+            "pg_total_relation_size(pc.oid)                 as idx_size",
+            "from pg_class pc left join pg_namespace pn on pc.relnamespace = pn.oid",
+            "where nspname not in ('pg_catalog', 'information_schema') and nspname !~ '^pg_toast' and relkind = 'i'",
+            "order by pg_total_relation_size(pc.oid) desc limit 50;");
+    ResultSet rs = conn.createStatement().executeQuery(query);
+
+    List<StatsResult.IndexSize> result = new ArrayList<>();
+
+    while (rs.next()) {
+      result.add(new StatsResult.IndexSize(rs.getString(1), rs.getString(2), rs.getString(3)));
     }
 
     return result;

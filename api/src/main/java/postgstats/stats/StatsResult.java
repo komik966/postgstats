@@ -9,18 +9,21 @@ class StatsResult {
   BgWriter bgWriter;
   List<Lock> locks;
   List<Index> indexes;
+  List<IndexSize> indexSizes;
 
   StatsResult(
       Map<String, Integer> dbSize,
       List<LongQuery> longQueries,
       BgWriter bgWriter,
       List<Lock> locks,
-      List<Index> indexes) {
+      List<Index> indexes,
+      List<IndexSize> indexSizes) {
     this.dbSize = dbSize;
     this.longQueries = longQueries;
     this.bgWriter = bgWriter;
     this.locks = locks;
     this.indexes = indexes;
+    this.indexSizes = indexSizes;
   }
 
   static class LongQuery {
@@ -104,6 +107,18 @@ class StatsResult {
       this.avgTuples = avgTuples;
       this.idxScan = idxScan;
       this.idxTupRead = idxTupRead;
+    }
+  }
+
+  static class IndexSize {
+    String idxName;
+    String idxSizePretty;
+    String idxSize;
+
+    IndexSize(String idxName, String idxSizePretty, String idxSize) {
+      this.idxName = idxName;
+      this.idxSizePretty = idxSizePretty;
+      this.idxSize = idxSize;
     }
   }
 }
