@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 class StatsResult {
-  Map<String, Integer> dbSize;
+  Map<String, Long> dbSize;
   List<LongQuery> longQueries;
   BgWriter bgWriter;
   List<Lock> locks;
@@ -12,7 +12,7 @@ class StatsResult {
   List<IndexSize> indexSizes;
 
   StatsResult(
-      Map<String, Integer> dbSize,
+      Map<String, Long> dbSize,
       List<LongQuery> longQueries,
       BgWriter bgWriter,
       List<Lock> locks,

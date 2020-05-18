@@ -27,12 +27,6 @@ dependencies {
     implementation 'postgresql:postgresql:9.1-901-1.jdbc4'
     implementation 'io.netty:netty-all:4.1.45.Final'
     implementation 'com.google.code.gson:gson:2.8.6'
-
-    // Use JUnit Jupiter API for testing.
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.2'
-
-    // Use JUnit Jupiter Engine for testing.
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
 }
 
 application {

@@ -29,16 +29,16 @@ public class Stats {
         queryIndexSizes());
   }
 
-  private Map<String, Integer> queryDbSize() throws SQLException {
+  private Map<String, Long> queryDbSize() throws SQLException {
     ResultSet rs =
         conn.createStatement()
             .executeQuery(
                 "select datname, pg_database_size(datname) from pg_database order by datname");
 
-    Map<String, Integer> result = new HashMap<>();
+    Map<String, Long> result = new HashMap<>();
 
     while (rs.next()) {
-      result.put(rs.getString(1), rs.getInt(2));
+      result.put(rs.getString(1), rs.getLong(2));
     }
 
     return result;
